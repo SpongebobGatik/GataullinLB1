@@ -192,14 +192,14 @@ int main() {
 		if (strcmp(command, "32") == 0) {
 			printf("Введите элемент: ");
 			scanf("%255s", element);
-			if (findNode(tree, element) != NULL) printf("True\n");
-			else printf("False\n");
+			tree = deleteNode(tree, element);
+			printf("Вы успешно удалили элемент и под ним элементы.\n");
 		}
 		if (strcmp(command, "33") == 0) {
 			printf("Введите элемент: ");
 			scanf("%255s", element);
-			tree = deleteNode(tree, element);
-			printf("Вы успешно удалили элемент и под ним элементы.\n");
+			if (findNode(tree, element) != NULL) printf("True\n");
+			else printf("False\n");
 		}
 		if (strcmp(command, "34") == 0) {
 			printTree(tree);
