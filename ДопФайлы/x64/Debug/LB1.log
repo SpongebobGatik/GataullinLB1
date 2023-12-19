@@ -1,0 +1,12 @@
+﻿  LB1.c
+C:\Users\Ms_Hlopets\source\repos\LB1\LB1.c(215,15): warning C4133: функция: несовместимые типы - из "Stack *" в "Queue *"
+C:\Users\Ms_Hlopets\source\repos\LB1\LB1.c(181,1): warning C4133: инициализация: несовместимые типы - из "NodeL1 *" в "NodeL2 *"
+  bin.c
+  onelist.c
+C:\Users\Ms_Hlopets\source\repos\LB1\onelist.c(33,40): warning C4028: формальный параметр 2 отличается от объявления
+C:\Users\Ms_Hlopets\source\repos\LB1\onelist.c(79,41): warning C4028: формальный параметр 2 отличается от объявления
+  twolist.c
+C:\Users\Ms_Hlopets\source\repos\LB1\twolist.c(24,42): warning C4090: функция: разные квалификаторы "const"
+C:\Users\Ms_Hlopets\source\repos\LB1\twolist.c(38,42): warning C4090: функция: разные квалификаторы "const"
+  Создание кода...
+  LB1.vcxproj -> C:\Users\Ms_Hlopets\source\repos\LB1\x64\Debug\LB1.exe
