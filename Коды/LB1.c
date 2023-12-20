@@ -193,7 +193,7 @@ int main() {
 			printf("Введите элемент: ");
 			scanf("%255s", element);
 			tree = deleteNode(tree, element);
-			printf("Вы успешно удалили элемент и под ним элементы.\n");
+			printf("Вы успешно удалили под элементом его ветви.\n");
 		}
 		if (strcmp(command, "33") == 0) {
 			printf("Введите элемент: ");

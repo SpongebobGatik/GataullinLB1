@@ -107,17 +107,18 @@ void freeTree(NodeTr* node) {
     free(node);
 }
 
-// Удаление узла из дерева
+// Удаление детей узла из дерева
 NodeTr* deleteNode(NodeTr* root, const char* value) {
     if (root == NULL) return NULL;
     if (strcmp(root->value, value) == 0) {
         freeTree(root->left);
         freeTree(root->right);
-        free(root->value);
-        free(root);
-        return NULL;
+        root->left = NULL;
+        root->right = NULL;
+        return root;
     }
     root->left = deleteNode(root->left, value);
     root->right = deleteNode(root->right, value);
     return root;
 }
+
