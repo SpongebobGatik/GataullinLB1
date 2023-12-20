@@ -3,6 +3,23 @@
 #include <string.h>
 #include "bin.h"
 
+// Функция для проверки, является ли дерево полным бинарным деревом
+int isFullBinaryTree(NodeTr* root) {
+    // Если дерево пустое, оно является полным бинарным деревом
+    if (root == NULL) return 1;
+
+    // Если у узла нет детей, это полное бинарное дерево
+    if (root->left == NULL && root->right == NULL) return 1;
+
+    // Если у узла есть оба ребенка, проверяем, являются ли поддеревья полными бинарными деревьями
+    if (root->left != NULL && root->right != NULL) {
+        return isFullBinaryTree(root->left) && isFullBinaryTree(root->right);
+    }
+
+    // В противном случае это не полное бинарное дерево
+    return 0;
+}
+
 // Создание нового узла дерева
 NodeTr* createNodeTr(const char* value) {
     NodeTr* newNode = (NodeTr*)malloc(sizeof(NodeTr));
@@ -27,7 +44,12 @@ void printTreeHelper(NodeTr* root, int space) {
 }
 
 void printTree(NodeTr* root) {
-    printTreeHelper(root, 0); // Начальный вызов с отступом 0
+    if (isFullBinaryTree(root)) {
+        printTreeHelper(root, 0); // Начальный вызов с отступом 0
+    }
+    else {
+        printf("Дерево не является полным бинарным деревом.\n");
+    }
 }
 
 // Очистка дерева
