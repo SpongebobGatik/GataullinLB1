@@ -1,24 +1,33 @@
 #ifndef TWOLIST_H
 #define TWOLIST_H
 
-typedef struct Node {
+typedef struct NodeT {
     char* data;
-    struct Node* prev;
-    struct Node* next;
+    struct NodeT* prev;
+    struct NodeT* next;
 } NodeL2;
 
-NodeL2* initListT();
+typedef struct ListT {
+    NodeL2* head;
+    NodeL2* tail;
+} ListT;
 
-void prependT(NodeL2** head, const char* newData);
+ListT* initListT();
 
-void appendT(NodeL2** head, const char* newData);
+void prependT(ListT** list, char* data);
 
-void removeFirstT(NodeL2** head);
+void appendT(ListT** list, char* data);
 
-void removeLastT(NodeL2** head);
+void removeFirstT(ListT** list);
 
-void printListT(NodeL2* head);
+void removeLastT(ListT** list);
 
-void clearListT(NodeL2** head);
+void printListT(ListT** list);
+
+void clearListT(ListT** list);
+
+void removeByValueT(ListT** list, char* data);
+
+NodeL2* searchByValueT(ListT** list, char* data);
 
 #endif

@@ -7,11 +7,9 @@ typedef struct NodeTr {
     struct NodeTr* right;
 } NodeTr;
 
-NodeTr* insertNode(NodeTr* root, const char* value, const char* path);
+NodeTr* insertNode(NodeTr* root, const char* value1, const char* path);
 
 NodeTr* findNode(NodeTr* root, const char* value);
-
-NodeTr* deleteNode(NodeTr* root, const char* value);
 
 void printTree(NodeTr* root);
 

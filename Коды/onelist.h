@@ -1,22 +1,27 @@
 #ifndef ONELIST_H
 #define ONELIST_H
-#include <stdbool.h>
 
-typedef struct NodeL1 {
+typedef struct Node {
     char* data;
-    struct NodeL1* next;
-} NodeL1;
+    struct Node* next;
+} NodeL;
 
-NodeL1* initList();
+typedef struct List {
+    NodeL* head;
+} List;
 
-void append(NodeL1** head, char* data);
+List* initList();
 
-void removeLast(NodeL1** head);
+void prepend(List** list, char* data);
 
-bool contains(NodeL1* head, char* data);
+void removeFirst(List** list);
 
-void printList(NodeL1* head);
+void printList(List** list);
 
-void clearList(NodeL1** head);
+void clearList(List** list);
+
+void removeByValue(List** list, char* data);
+
+NodeL* searchByValue(List** list, char* data);
 
 #endif

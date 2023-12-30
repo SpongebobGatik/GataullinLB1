@@ -1,4 +1,4 @@
 ﻿  LB1.c
-C:\Users\Ms_Hlopets\Desktop\ЛБ1\LB1\LB1.c(215,15): warning C4133: функция: несовместимые типы - из "Stack *" в "Queue *"
-C:\Users\Ms_Hlopets\Desktop\ЛБ1\LB1\LB1.c(181,1): warning C4133: инициализация: несовместимые типы - из "NodeL1 *" в "NodeL2 *"
-  LB1.vcxproj -> C:\Users\Ms_Hlopets\Desktop\ЛБ1\LB1\x64\Debug\LB1.exe
+C:\Users\Ms_Hlopets\Desktop\Лабы2023\ЛБ1\LB1\LB1.c(253,15): warning C4133: функция: несовместимые типы - из "Stack *" в "Queue *"
+C:\Users\Ms_Hlopets\Desktop\Лабы2023\ЛБ1\LB1\LB1.c(225,1): warning C4133: инициализация: несовместимые типы - из "List *" в "ListT *"
+  LB1.vcxproj -> C:\Users\Ms_Hlopets\Desktop\Лабы2023\ЛБ1\LB1\x64\Debug\LB1.exe

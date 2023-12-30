@@ -3,23 +3,6 @@
 #include <string.h>
 #include "bin.h"
 
-// Функция для проверки, является ли дерево полным бинарным деревом
-int isFullBinaryTree(NodeTr* root) {
-    // Если дерево пустое, оно является полным бинарным деревом
-    if (root == NULL) return 1;
-
-    // Если у узла нет детей, это полное бинарное дерево
-    if (root->left == NULL && root->right == NULL) return 1;
-
-    // Если у узла есть оба ребенка, проверяем, являются ли поддеревья полными бинарными деревьями
-    if (root->left != NULL && root->right != NULL) {
-        return isFullBinaryTree(root->left) && isFullBinaryTree(root->right);
-    }
-
-    // В противном случае это не полное бинарное дерево
-    return 0;
-}
-
 // Создание нового узла дерева
 NodeTr* createNodeTr(const char* value) {
     NodeTr* newNode = (NodeTr*)malloc(sizeof(NodeTr));
@@ -44,12 +27,7 @@ void printTreeHelper(NodeTr* root, int space) {
 }
 
 void printTree(NodeTr* root) {
-    if (isFullBinaryTree(root)) {
-        printTreeHelper(root, 0); // Начальный вызов с отступом 0
-    }
-    else {
-        printf("Дерево не является полным бинарным деревом.\n");
-    }
+    printTreeHelper(root, 0); // Начальный вызов с отступом 0
 }
 
 // Очистка дерева
@@ -63,6 +41,25 @@ void clearTree(NodeTr** rootPtr) {
     *rootPtr = NULL;
 }
 
+// Балансировка
+void makeFullBinaryTree(NodeTr* root, int depth) {
+    if (root == NULL || depth == 0) return;
+
+    if (root->left == NULL) {
+        root->left = createNodeTr("null");
+    }
+    else {
+        makeFullBinaryTree(root->left, depth - 1);
+    }
+    if (root->right == NULL) {
+        root->right = createNodeTr("null");
+    }
+    else {
+        makeFullBinaryTree(root->right, depth - 1);
+    }
+}
+
+
 // Вставка узла в дерево
 NodeTr* insertNode(NodeTr* root, const char* value, const char* path) {
     if (path[0] == 'C' || path[0] == '\0') {
@@ -72,12 +69,10 @@ NodeTr* insertNode(NodeTr* root, const char* value, const char* path) {
         root->value = _strdup(value);
         return root;
     }
-
     if (root == NULL) {
         // Если достигнут конец пути и текущий узел не существует, создаем его
         root = createNodeTr("");
     }
-
     // Рекурсивно двигаемся по дереву в соответствии с путем
     if (path[0] == 'L') {
         root->left = insertNode(root->left, value, path + 1);
@@ -85,7 +80,7 @@ NodeTr* insertNode(NodeTr* root, const char* value, const char* path) {
     else if (path[0] == 'R') {
         root->right = insertNode(root->right, value, path + 1);
     }
-
+    makeFullBinaryTree(root, strlen(path));
     return root;
 }
 
@@ -107,18 +102,4 @@ void freeTree(NodeTr* node) {
     free(node);
 }
 
-// Удаление детей узла из дерева
-NodeTr* deleteNode(NodeTr* root, const char* value) {
-    if (root == NULL) return NULL;
-    if (strcmp(root->value, value) == 0) {
-        freeTree(root->left);
-        freeTree(root->right);
-        root->left = NULL;
-        root->right = NULL;
-        return root;
-    }
-    root->left = deleteNode(root->left, value);
-    root->right = deleteNode(root->right, value);
-    return root;
-}
 

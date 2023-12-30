@@ -10,6 +10,12 @@ StringArray* initStringArray();
 
 void addString(StringArray* sa, int index, const char* value);
 
+void appendString(StringArray* sa, const char* value);
+
+int containsString(StringArray* sa, const char* value);
+
+void replaceString(StringArray* sa, int index, const char* value);
+
 void removeString(StringArray* sa, int index);
 
 void printString(StringArray* sa, int index);

@@ -1,103 +1,80 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include "onelist.h"
 
-// Функция инициализации списка
-NodeL1* initList() {
-    return NULL;
+// Инициализация списка
+List* initList() {
+    List* list = (List*)malloc(sizeof(List)); // Выделение памяти под список
+    list->head = NULL; // Установка головы списка в NULL
+    return list; // Возвращение указателя на список
 }
 
-// Функция инициализации нового узла
-NodeL1* createNode(char* data) {
-    NodeL1* newNode = (NodeL1*)malloc(sizeof(NodeL1));
-    newNode->data = _strdup(data); // Дублирование строки для хранения данных
-    newNode->next = NULL;
-    return newNode;
+// Добавление элемента в начало списка
+void prepend(List** list, char* data) {
+    NodeL* node = (NodeL*)malloc(sizeof(NodeL)); // Выделение памяти под узел
+    node->data = _strdup(data); // Копирование данных
+    node->next = (*list)->head; // Установка указателя на следующий элемент
+    (*list)->head = node; // Устанавливаем голову списка как текущий узел
 }
 
-// Функция вывода списка
-void printList(NodeL1* head) {
-    NodeL1* current = head;
-    printf("Ваш односвязный список: ");
-    while (current != NULL) {
-        printf("%s  ", current->data);
-        current = current->next;
+// Удаление первого элемента списка
+void removeFirst(List** list) {
+    if (!(*list)->head) {
+        return; // Если голова списка не существует, выходим из функции
     }
-    printf("NULL\n");
+    NodeL* temp = (*list)->head; // Сохраняем указатель на голову списка
+    (*list)->head = (*list)->head->next; // Устанавливаем голову списка на следующий элемент
+    free(temp->data); // Освобождаем память от данных
+    free(temp); // Освобождаем память от узла
 }
 
-// Функция добавления в конец списка
-void append(NodeL1** head, const char* newData) {
-    NodeL1* newNode = (NodeL1*)malloc(sizeof(NodeL1));
-    // Выделение памяти для новой строки
-    newNode->data = malloc(strlen(newData) + 1);
-    // Копирование данных в новую строку
-    strcpy(newNode->data, newData);
-    newNode->next = NULL;
-    printf("Вы добавили элемент %s\n", newData);
-    if (*head == NULL) {
-        *head = newNode;
-        return;
+// Вывод списка
+void printList(List** list) {
+    NodeL* temp = (*list)->head; // Начинаем с головы списка
+    while (temp) {
+        printf("%s ", temp->data); // Выводим данные
+        temp = temp->next; // Переходим к следующему элементу
     }
-
-    NodeL1* last = *head;
-    while (last->next != NULL) {
-        last = last->next;
-    }
-    last->next = newNode;
+    printf("\n"); // Переходим на новую строку после вывода всех элементов
 }
 
-// Функция удаления из конца списка
-void removeLast(NodeL1** head) {
-    if (*head == NULL) {
-        return;
+// Очистка списка
+void clearList(List** list) {
+    while ((*list)->head) {
+        removeFirst(list); // Удаляем первый элемент, пока голова списка существует
     }
-
-    NodeL1* last = *head;
-    NodeL1* prev = NULL;
-
-    while (last->next != NULL) {
-        prev = last;
-        last = last->next;
-    }
-
-    if (prev == NULL) {
-        free(*head);
-        *head = NULL;
-    }
-    else {
-        free(last);
-        prev->next = NULL;
-    }
-    printf("Вы успешно удалили элемент.\n");
 }
 
-// Функция проверки наличия элемента
-bool contains(NodeL1* head, const char* searchData) {
-    NodeL1* current = head;
-    while (current != NULL) {
-        // Сравнение строк с учётом содержимого
-        if (strcmp(current->data, searchData) == 0) {
-            return true;
+// Удаление элемента списка по значению
+void removeByValue(List** list, char* data) {
+    NodeL* temp = (*list)->head; // Начинаем с головы списка
+    NodeL* prev = NULL; // Инициализируем указатель на предыдущий элемент
+    while (temp) {
+        if (strcmp(temp->data, data) == 0) { // Если данные совпадают
+            if (prev) {
+                prev->next = temp->next; // Устанавливаем следующий элемент для предыдущего элемента
+            }
+            else {
+                (*list)->head = temp->next; // Иначе устанавливаем голову списка на следующий элемент
+            }
+            free(temp->data); // Освобождаем память от данных
+            free(temp); // Освобождаем память от узла
+            return; // Выходим из функции
         }
-        current = current->next;
+        prev = temp; // Сохраняем текущий узел как предыдущий
+        temp = temp->next; // Переходим к следующему элементу
     }
-    return false;
 }
 
-// Функция очистки списка
-void clearList(NodeL1** head) {
-    NodeL1* current = *head;
-    NodeL1* next = NULL;
-
-    while (current != NULL) {
-        next = current->next;
-        free(current);
-        current = next;
+// Поиск элемента списка по значению
+NodeL* searchByValue(List** list, char* data) {
+    NodeL* temp = (*list)->head; // Начинаем с головы списка
+    while (temp) {
+        if (strcmp(temp->data, data) == 0) { // Если данные совпадают
+            return temp; // Возвращаем указатель на узел
+        }
+        temp = temp->next; // Переходим к следующему элементу
     }
-
-    *head = NULL;
+    return NULL; // Если элемент не найден, возвращаем NULL
 }

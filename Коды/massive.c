@@ -77,6 +77,38 @@ void compareStrings(StringArray* sa, int index1, int index2) {
     }
 }
 
+// Функция добавления строки в конец массива
+void appendString(StringArray* sa, const char* value) {
+    if (sa->size >= MAX_SIZE) {
+        printf("Массив полон.\n");
+        return;
+    }
+    sa->array[sa->size] = (char*)malloc(MAX_STRING_LENGTH * sizeof(char));
+    strncpy(sa->array[sa->size], value, MAX_STRING_LENGTH);
+    printf("Вы добавили элемент %s в конец массива\n", value);
+    sa->size++;
+}
+
+// Функция проверки наличия строки в массиве
+int containsString(StringArray* sa, const char* value) {
+    for (size_t i = 0; i < sa->size; i++) {
+        if (strcmp(sa->array[i], value) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Функция замены строки по индексу
+void replaceString(StringArray* sa, int index, const char* value) {
+    if (index < 0 || index >= sa->size) {
+        printf("Индекс вне диапазона.\n");
+        return;
+    }
+    strncpy(sa->array[index], value, MAX_STRING_LENGTH);
+    printf("Вы заменили элемент на позиции %d на %s\n", index, value);
+}
+
 // Функция вывода массива строк
 void printStringArray(StringArray* sa) {
     printf("Ваш массив: ");
