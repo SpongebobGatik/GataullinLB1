@@ -3,6 +3,23 @@
 #include <string.h>
 #include "bin.h"
 
+// ‘ункци€ дл€ проверки, €вл€етс€ ли дерево полным бинарным деревом
+int isFullBinaryTree(NodeTr* root) {
+    // ≈сли дерево пустое, оно €вл€етс€ полным бинарным деревом
+    if (root == NULL) return 1;
+
+    // ≈сли у узла нет детей, это полное бинарное дерево
+    if (root->left == NULL && root->right == NULL) return 1;
+
+    // ≈сли у узла есть оба ребенка, провер€ем, €вл€ютс€ ли поддеревь€ полными бинарными деревь€ми
+    if (root->left != NULL && root->right != NULL) {
+        return isFullBinaryTree(root->left) && isFullBinaryTree(root->right);
+    }
+
+    // ¬ противном случае это не полное бинарное дерево
+    return 0;
+}
+
 // —оздание нового узла дерева
 NodeTr* createNodeTr(const char* value) {
     NodeTr* newNode = (NodeTr*)malloc(sizeof(NodeTr));
@@ -41,46 +58,57 @@ void clearTree(NodeTr** rootPtr) {
     *rootPtr = NULL;
 }
 
-// Ѕалансировка
-void makeFullBinaryTree(NodeTr* root, int depth) {
-    if (root == NULL || depth == 0) return;
-
-    if (root->left == NULL) {
-        root->left = createNodeTr("null");
-    }
-    else {
-        makeFullBinaryTree(root->left, depth - 1);
-    }
-    if (root->right == NULL) {
-        root->right = createNodeTr("null");
-    }
-    else {
-        makeFullBinaryTree(root->right, depth - 1);
-    }
-}
-
-
 // ¬ставка узла в дерево
-NodeTr* insertNode(NodeTr* root, const char* value, const char* path) {
-    if (path[0] == 'C' || path[0] == '\0') {
-        if (root == NULL) return createNodeTr(value);
-        // ≈сли узел уже существует, замен€ем его значение
-        free(root->value);
-        root->value = _strdup(value);
+NodeTr* insertNode(NodeTr* root, const char* value1, const char* value2, char* path) {
+    if (path[0] == 'C') {
+        root = createNodeTr(value1);
         return root;
     }
     if (root == NULL) {
-        // ≈сли достигнут конец пути и текущий узел не существует, создаем его
-        root = createNodeTr("");
+        root = createNodeTr("null");
     }
-    // –екурсивно двигаемс€ по дереву в соответствии с путем
+    if (path[0] != '\0' && path[1] == 'L' && root->right == NULL) root->right = createNodeTr("null");
+    if (path[0] != '\0' && path[1] == 'R' && root->left == NULL) root->left = createNodeTr("null");
+    if (path[1] == '\0') {
+        if (path[0] == 'L') {
+            if (root->left == NULL) {
+                root->left = createNodeTr(value1);
+            }
+            else {
+                free(root->left->value);
+                root->left->value = _strdup(value1);
+            }
+            if (root->right == NULL) {
+                root->right = createNodeTr(value2);
+            }
+            else {
+                free(root->right->value);
+                root->right->value = _strdup(value2);
+            }
+        }
+        else if (path[0] == 'R') {
+            if (root->right == NULL) {
+                root->right = createNodeTr(value2);
+            }
+            else {
+                free(root->right->value);
+                root->right->value = _strdup(value2);
+            }
+            if (root->left == NULL) {
+                root->left = createNodeTr(value1);
+            }
+            else {
+                free(root->left->value);
+                root->left->value = _strdup(value1);
+            }
+        }
+    }
     if (path[0] == 'L') {
-        root->left = insertNode(root->left, value, path + 1);
+        root->left = insertNode(root->left, value1, value2, path + 1);
     }
     else if (path[0] == 'R') {
-        root->right = insertNode(root->right, value, path + 1);
+        root->right = insertNode(root->right, value1, value2, path + 1);
     }
-    makeFullBinaryTree(root, strlen(path));
     return root;
 }
 
@@ -102,4 +130,18 @@ void freeTree(NodeTr* node) {
     free(node);
 }
 
+// ”даление детей узла из дерева
+NodeTr* deleteNode(NodeTr* root, const char* value) {
+    if (root == NULL) return NULL;
+    if (strcmp(root->value, value) == 0) {
+        freeTree(root->left);
+        freeTree(root->right);
+        root->left = NULL;
+        root->right = NULL;
+        return root;
+    }
+    root->left = deleteNode(root->left, value);
+    root->right = deleteNode(root->right, value);
+    return root;
+}
 
